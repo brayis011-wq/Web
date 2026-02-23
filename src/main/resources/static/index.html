@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repositorio Académico</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -10,16 +11,75 @@
 <div class="container">
 
     <aside class="sidebar">
-        <h2>Repositorio</h2>
+        <div class="sidebar-brand">
+            <div class="brand-icon">UC</div>
+            <div class="brand-text">
+                <span class="brand-title">Repositorio</span>
+                <span class="brand-sub">Sistemas de Información</span>
+            </div>
+        </div>
         <ul id="menu">
-            <li onclick="loadHome()">🏠 Home</li>
+            <li onclick="loadHome()">🏠 &nbsp;Inicio</li>
             <hr>
         </ul>
     </aside>
 
     <main class="main-content" id="mainContent">
-        <h1>Bienvenido</h1>
-        <p>Repositorio académico.</p>
+
+        <!-- HOME: imagen + info materia -->
+        <div class="home-wrapper">
+
+            <!-- Imagen con campo URL editable -->
+            <div class="home-img-block">
+                <img id="homeImg"
+                     src="https://www.ucundinamarca.edu.co/images/slider/2020/fachada.jpg"
+                     alt="Universidad de Cundinamarca">
+                <div class="img-url-bar">
+                    <span class="img-url-label">URL imagen</span>
+                    <input type="text"
+                           id="imgUrlInput"
+                           value="https://www.ucundinamarca.edu.co/images/slider/2020/fachada.jpg"
+                           placeholder="Pega aquí la URL de la imagen…"
+                           onchange="document.getElementById('homeImg').src = this.value"
+                           onkeydown="if(event.key==='Enter') document.getElementById('homeImg').src = this.value">
+                </div>
+            </div>
+
+            <!-- Info de la materia -->
+            <div class="home-info">
+                <span class="home-badge">Plataforma REA</span>
+
+                <h1>Sistemas de<br><span>Información</span></h1>
+
+                <h3>
+                    <a href="https://www.ucundinamarca.edu.co/" target="_blank">
+                        Universidad de Cundinamarca
+                    </a>
+                </h3>
+
+                <p>
+                    Este CADI de <strong>Sistemas de Información</strong> tiene como objetivo 
+                    comprender, diseñar e implementar sistemas que permitan la captura, 
+                    almacenamiento, procesamiento y distribución de información dentro de 
+                    las organizaciones, apoyando la toma de decisiones a nivel operativo, 
+                    táctico y estratégico.
+                </p>
+
+                <ul class="home-topics">
+                    <li>📊 Modelado y diseño de bases de datos</li>
+                    <li>🔄 Ciclo de vida de los sistemas de información</li>
+                    <li>🏢 SI empresariales: ERP, CRM, SCM</li>
+                    <li>🔐 Seguridad e integridad de la información</li>
+                    <li>☁️ Sistemas distribuidos y en la nube</li>
+                </ul>
+
+                <a href="https://www.ucundinamarca.edu.co/" target="_blank" class="home-link">
+                    Ver más información →
+                </a>
+            </div>
+
+        </div>
+
     </main>
 
 </div>
