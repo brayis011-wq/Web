@@ -9,9 +9,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function loadHome() {
   document.getElementById("mainContent").innerHTML = `
-        <h1>Inicio</h1>
-        <p>Bienvenido al repositorio académico.</p>
-    `;
+    <div class="home-wrapper">
+
+      <div class="home-img-block">
+        <img src="https://www.ucundinamarca.edu.co/images/slider/2020/fachada.jpg"
+             alt="Universidad de Cundinamarca">
+        <div class="img-url-bar">
+          <span class="img-url-label">URL imagen</span>
+          <input type="text"
+                 value="https://www.ucundinamarca.edu.co/images/slider/2020/fachada.jpg"
+                 placeholder="Pega aquí la URL de la imagen…"
+                 oninput="document.querySelector('.home-img-block img').src = this.value">
+        </div>
+      </div>
+
+      <div class="home-info">
+        <span class="home-badge">Plataforma REA</span>
+
+        <h1>Sistemas de<br><span>Información</span></h1>
+
+        <h3>
+          <a href="https://www.ucundinamarca.edu.co/" target="_blank">
+            Universidad de Cundinamarca
+          </a>
+        </h3>
+
+        <p>
+          Este CADI de <strong>Sistemas de Información</strong> tiene como objetivo
+          comprender, diseñar e implementar sistemas que permitan la captura,
+          almacenamiento, procesamiento y distribución de información dentro de
+          las organizaciones, apoyando la toma de decisiones a nivel operativo,
+          táctico y estratégico.
+        </p>
+
+        <ul class="home-topics">
+          <li>📊 Modelado y diseño de bases de datos</li>
+          <li>🔄 Ciclo de vida de los sistemas de información</li>
+          <li>🏢 SI empresariales: ERP, CRM, SCM</li>
+          <li>🔐 Seguridad e integridad de la información</li>
+          <li>☁️ Sistemas distribuidos y en la nube</li>
+        </ul>
+
+        <a href="https://www.ucundinamarca.edu.co/" target="_blank" class="home-link">
+          Ver más información →
+        </a>
+      </div>
+
+    </div>
+  `;
 }
 
 /* ===============================
@@ -23,7 +68,6 @@ async function loadCadis() {
 
   const menu = document.getElementById("menu");
 
-  // 🔥 Solo borrar elementos dinámicos
   document.querySelectorAll(".cadi-item, .area-item")
     .forEach(e => e.remove());
 
