@@ -523,3 +523,14 @@ body {
     font-size: 14px;
     font-style: italic;
 }
+/* ================================================
+   SOLUCIÓN DEFINITIVA A LA SUPERPOSICIÓN DE CARTAS
+================================================= */
+.main-content > div {
+    flex-shrink: 0 !important;
+}
+
+.semana-wrapper, .home-wrapper {
+    min-height: min-content !important;
+    height: max-content !important;
+}
