@@ -79,6 +79,153 @@
             </div>
 
         </div>
+        <!-- FIN HOME — nada de lo anterior fue modificado -->
+
+        <!-- ================================================
+             SEMANA 1 — Arquitectura y Gestión en SO
+             Fuente: PDF "Sistemas_Operativos_Arquitectura_y_Gestión"
+        ================================================= -->
+        <div class="semana-wrapper" id="semana1">
+
+            <div class="semana-header">
+                <div class="semana-num">Semana 1</div>
+                <h2>Arquitectura y Gestión en Sistemas Operativos</h2>
+                <p class="semana-desc">Procesos, Memoria y Algoritmos de Planificación</p>
+            </div>
+
+            <div class="semana-grid">
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">🎛️</div>
+                    <h3>El Orquestador: Definición y Propósito</h3>
+                    <p>El Sistema Operativo (SO) es la capa de software que administra el hardware y proporciona una interfaz abstracta para las aplicaciones. Actúa como intermediario entre el 'lenguaje de máquina' y el usuario.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>Multiplexación en el Tiempo:</strong> Turnos rotativos de uso (ej. CPU).</li>
+                        <li><strong>Multiplexación en el Espacio:</strong> División física de recursos (ej. RAM).</li>
+                        <li><strong>Clasificación:</strong> Batch, Tiempo Compartido, Tiempo Real.</li>
+                        <li><strong>Capas:</strong> Aplicaciones → SO (Gestión) → Hardware (Recursos Físicos).</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">🖥️</div>
+                    <h3>Abstracción del Hardware: La Máquina Virtual</h3>
+                    <p>El VMM (Monitor de Máquina Virtual) crea copias exactas del hardware, permitiendo aislamiento y consolidación entre sistemas.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>Tipo 1 — Bare Metal:</strong> Hipervisor directo sobre hardware. Ej: VMware ESXi.</li>
+                        <li><strong>Tipo 2 — Hosted:</strong> Hipervisor sobre un SO anfitrión. Ej: VirtualBox.</li>
+                        <li><strong>Aislamiento:</strong> Cada VM opera de forma independiente.</li>
+                        <li><strong>Consolidación:</strong> Múltiples sistemas en un solo servidor físico.</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">⚙️</div>
+                    <h3>Anatomía de la Unidad de Trabajo: El Proceso</h3>
+                    <p>Un programa es una entidad pasiva (código en disco). Un proceso es una entidad activa (programa en ejecución). Cada proceso tiene un PCB con toda su información de estado.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>PID:</strong> Identificador único del proceso (ej: 0x812A).</li>
+                        <li><strong>Estado:</strong> Listo / En Ejecución / Bloqueado.</li>
+                        <li><strong>Contador de Programa &amp; Registros CPU:</strong> Indican la siguiente instrucción.</li>
+                        <li><strong>Límites de Memoria:</strong> Rango de direcciones asignadas (ej: 0x8000 – 0xFFFF).</li>
+                        <li><strong>Info de Contabilidad:</strong> Uso de CPU, estadísticas de I/O.</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">🔄</div>
+                    <h3>Ciclo de Vida: Diagrama de Estados del Proceso</h3>
+                    <p>Los procesos transitan entre estados. Solo puede haber 1 proceso en ejecución por CPU al mismo tiempo.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>Nuevo → Ready:</strong> El proceso es admitido al sistema.</li>
+                        <li><strong>Ready → Run:</strong> El dispatcher asigna la CPU (Dispatch).</li>
+                        <li><strong>Run → Wait:</strong> El proceso solicita una operación E/S.</li>
+                        <li><strong>Wait → Ready:</strong> Fin de la operación E/S.</li>
+                        <li><strong>Run → Fin:</strong> El proceso termina su ejecución (Exit).</li>
+                        <li><strong>Run → Ready:</strong> Fin de tiempo / Interrupción expulsiva.</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">🍴</div>
+                    <h3>Control del Ciclo de Vida: UNIX vs. Windows</h3>
+                    <p>Los SO exponen llamadas al sistema para crear, ejecutar y terminar procesos. UNIX y Windows difieren en su modelo de creación.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>Creación UNIX:</strong> fork() — copia exacta del padre.</li>
+                        <li><strong>Creación Windows:</strong> CreateProcess() — espacio completamente nuevo.</li>
+                        <li><strong>Ejecución nueva UNIX:</strong> execve() — reemplaza la imagen del proceso.</li>
+                        <li><strong>Terminación:</strong> exit/kill (UNIX) · ExitProcess/TerminateProcess (Windows).</li>
+                        <li><strong>Sincronización:</strong> waitpid() (UNIX) · WaitForSingleObject() (Windows).</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">📅</div>
+                    <h3>El Estratega: Introducción a la Planificación de CPU</h3>
+                    <p>El objetivo del planificador es maximizar el uso de CPU, la equidad y el throughput. Existen tres niveles según el horizonte de tiempo.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>Largo Plazo (Admisión):</strong> Decide qué procesos ingresan (~300 ms).</li>
+                        <li><strong>Medio Plazo (Swapping):</strong> Mueve procesos entre RAM y disco.</li>
+                        <li><strong>Corto Plazo (Dispatcher):</strong> Asigna la CPU al proceso listo (~50 ms).</li>
+                        <li><strong>Expulsiva:</strong> El SO puede interrumpir al proceso activo.</li>
+                        <li><strong>No Expulsiva:</strong> El proceso cede la CPU voluntariamente.</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">📊</div>
+                    <h3>Algoritmos Básicos: FCFS y SJF</h3>
+                    <p>Los algoritmos de planificación determinan el orden de ejecución. FCFS es simple pero genera el efecto convoy. SJF minimiza el tiempo de espera pero puede causar inanición.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>FCFS:</strong> No expulsivo. Tiempo de espera prom.: 2.75. Sufre efecto convoy.</li>
+                        <li><strong>SJF:</strong> No expulsivo. Tiempo de espera prom.: 1.5. Óptimo pero requiere duración a priori.</li>
+                        <li><strong>Efecto Convoy:</strong> Procesos cortos esperan detrás de uno largo.</li>
+                        <li><strong>Inanición:</strong> Procesos largos pueden esperar indefinidamente en SJF.</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">🔁</div>
+                    <h3>Algoritmos Avanzados: SRTF y Round Robin</h3>
+                    <p>SRTF es la versión expulsiva de SJF. Round Robin garantiza equidad con un quantum fijo, ideal para sistemas de tiempo compartido.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>SRTF:</strong> Expulsivo. Si llega un proceso más corto, interrumpe al actual.</li>
+                        <li><strong>Round Robin:</strong> Cada proceso recibe un quantum fijo (Quantum = 4).</li>
+                        <li><strong>RR — Espera prom.:</strong> 0.5 (excelente respuesta interactiva).</li>
+                        <li><strong>RR — Retorno prom.:</strong> 4.25 (mayor latencia por cambios de contexto).</li>
+                        <li><strong>Elección del Quantum:</strong> Muy pequeño → muchos cambios. Muy grande → como FCFS.</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">💾</div>
+                    <h3>El Espacio de Trabajo: Gestión de Memoria</h3>
+                    <p>La gestión de memoria busca proteger los procesos entre sí, permitir la compartición controlada y optimizar el uso para maximizar la multiprogramación.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>Protección:</strong> Aislamiento entre procesos — ninguno accede a memoria ajena.</li>
+                        <li><strong>Compartición:</strong> Acceso común controlado a zonas compartidas (librerías, IPC).</li>
+                        <li><strong>Optimización:</strong> Maximizar la multiprogramación con más procesos en RAM.</li>
+                        <li><strong>Jerarquía:</strong> Registros/Caché → RAM (volátil) → Disco (persistente).</li>
+                    </ul>
+                </div>
+
+                <div class="semana-card">
+                    <div class="semana-card-icon">🗺️</div>
+                    <h3>La Gran Ilusión: Memoria Virtual y Paginación</h3>
+                    <p>La MMU traduce direcciones lógicas a físicas. Las páginas no usadas se mueven al área de Swap en disco, creando la ilusión de memoria infinita.</p>
+                    <ul class="semana-card-list">
+                        <li><strong>MMU + TLB:</strong> Traduce direcciones virtuales a físicas. TLB es caché de traducciones recientes.</li>
+                        <li><strong>Paginación:</strong> Memoria dividida en páginas (lógicas) y marcos (físicos) de tamaño fijo.</li>
+                        <li><strong>Fallo de Página:</strong> La página no está en RAM → se carga desde el disco (Swap).</li>
+                        <li><strong>Memoria Virtual:</strong> Cada proceso tiene su propio espacio lógico, mayor que la RAM física.</li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- fin semana-grid -->
+
+        </div>
+        <!-- FIN SEMANA 1 -->
 
     </main>
 
