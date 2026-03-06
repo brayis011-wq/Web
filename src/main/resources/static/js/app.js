@@ -283,29 +283,22 @@ async function loadReas(cadiId, element) {
   const reas = await res.json();
   const filtradas = reas.filter((r) => r.cadi.id === cadiId);
 
-  // Distribuir secciones de SEMANA_1 entre los REAs disponibles
-  const totalSecciones = SEMANA_1.secciones.length;
-  const totalReas = filtradas.length;
-
+  // Insertar después del elemento CADI en orden correcto
+  let insertAfter = element;
   filtradas.forEach((rea, reaIdx) => {
     const sub = document.createElement("li");
     sub.textContent = "📂 " + rea.nombre;
     sub.classList.add("area-item");
 
     if (reaIdx === 0) {
-      // Primer REA: muestra todas las secciones del PDF
       sub.onclick = () => loadReaConSemana(rea.id, SEMANA_1.secciones, rea.nombre);
     } else {
-      // Resto de REAs: solo actividades normales
       sub.onclick = () => loadActividades(rea.id);
     }
 
-    element.after(sub);
+    insertAfter.after(sub);
+    insertAfter = sub; // el siguiente se inserta después de este
   });
-
-  // Re-ordenar: element.after() inserta en reversa, revertimos
-  const inserted = [...element.parentNode.querySelectorAll(".area-item")];
-  inserted.reverse().forEach(el => element.after(el));
 }
 
 /* ===============================
@@ -317,6 +310,17 @@ async function loadReaConSemana(reaId, secciones, reaNombre) {
   const filtradas = actividades.filter((a) => a.rea.id === reaId);
 
   const main = document.getElementById("mainContent");
+
+  // Tarjetas de secciones del PDF
+  const semanaCards = secciones.map((sec, i) => `
+    <div class="semana-card" style="animation-delay:${i * 0.06}s">
+      <div class="semana-card-icon">${sec.icono}</div>
+      <h3>${sec.titulo}</h3>
+      <p>${sec.descripcion}</p>
+      <ul class="semana-card-list">
+        ${sec.items.map(it => `<li>${it}</li>`).join("")}
+      </ul>
+    </div>`).join("");
 
   // Tarjetas de actividades del backend
   const actCards = filtradas.map(act => {
@@ -333,39 +337,32 @@ async function loadReaConSemana(reaId, secciones, reaNombre) {
       </div>`;
   }).join("");
 
-  // Tarjetas de secciones del PDF
-  const semanaCards = secciones.map((sec, i) => `
-    <div class="semana-card" style="animation-delay:${i * 0.06}s">
-      <div class="semana-card-icon">${sec.icono}</div>
-      <h3>${sec.titulo}</h3>
-      <p>${sec.descripcion}</p>
-      <ul class="semana-card-list">
-        ${sec.items.map(it => `<li>${it}</li>`).join("")}
-      </ul>
-    </div>`).join("");
-
   main.innerHTML = `
     <div class="semana-wrapper">
+
+      <!-- ENCABEZADO REA -->
       <div class="semana-header">
-        <div class="semana-num">Semana 1 · REA</div>
+        <div class="semana-num">Semana 1</div>
         <h2>${reaNombre}</h2>
-        <p class="semana-desc">Contenido académico y actividades de este recurso educativo.</p>
+        <p class="semana-desc">Arquitectura y Gestión en Sistemas Operativos — Procesos, Memoria y Algoritmos de Planificación</p>
       </div>
 
-      ${secciones.length > 0 ? `
-        <div style="padding:24px 44px 0;">
-          <div class="semana-grid" style="padding:0;">
-            ${semanaCards}
-          </div>
-        </div>` : ""}
-
-      <div style="padding:20px 44px 8px 44px;display:flex;align-items:center;gap:10px;">
-        <h2 style="margin:0;border:none;padding:0;font-size:18px;color:var(--azul);">Actividades</h2>
-        <button onclick="crearActividad(${reaId})" style="margin:0;">➕ Nueva Actividad</button>
+      <!-- CONTENIDO DEL PDF -->
+      <div class="semana-grid">
+        ${semanaCards}
       </div>
+
+      <!-- SEPARADOR ACTIVIDADES -->
+      <div class="rea-actividades-header">
+        <h2>📁 Actividades del REA</h2>
+        <button onclick="crearActividad(${reaId})">➕ Nueva Actividad</button>
+      </div>
+
+      <!-- TARJETAS DE ACTIVIDADES -->
       <div class="card-container">
-        ${actCards || '<p style="padding:0 44px;color:var(--muted);">No hay actividades aún.</p>'}
+        ${actCards || '<p class="no-actividades">No hay actividades registradas aún.</p>'}
       </div>
+
     </div>
   `;
 }
