@@ -145,7 +145,6 @@ const SEMANA_1 = {
    INICIALIZACIÓN
 ================================ */
 document.addEventListener("DOMContentLoaded", () => {
-  loadHome();
   loadCadis();
   buildSemanasMenu();
 });
@@ -200,6 +199,9 @@ function loadSemana() {
 }
 
 function loadHome() {
+  // Si el home-wrapper ya existe en el HTML estático, no lo sobreescribimos
+  // Solo restauramos si fue reemplazado por otra vista
+  if (document.querySelector(".home-wrapper")) return;
   document.getElementById("mainContent").innerHTML = `
     <div class="home-wrapper">
 
