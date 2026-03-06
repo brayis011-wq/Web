@@ -145,8 +145,8 @@ const SEMANA_1 = {
    INICIALIZACIÓN
 ================================ */
 document.addEventListener("DOMContentLoaded", () => {
-  loadCadis();
-  buildSemanasMenu();
+  buildSemanasMenu();   // siempre se ejecuta primero
+  loadCadis();          // si falla el backend, no afecta el menú
 });
 
 /* ===============================
@@ -257,17 +257,21 @@ function loadHome() {
    CARGAR CADIS (MATERIAS)
 ================================ */
 async function loadCadis() {
-  const res = await fetch(`${API}/cadis`);
-  const cadis = await res.json();
-  const menu = document.getElementById("menu");
-  document.querySelectorAll(".cadi-item, .area-item").forEach(e => e.remove());
-  cadis.forEach((cadi) => {
-    const li = document.createElement("li");
-    li.classList.add("cadi-item");
-    li.textContent = "📚 " + cadi.nombre;
-    li.onclick = () => loadReas(cadi.id, li);
-    menu.appendChild(li);
-  });
+  try {
+    const res = await fetch(`${API}/cadis`);
+    const cadis = await res.json();
+    const menu = document.getElementById("menu");
+    document.querySelectorAll(".cadi-item, .area-item").forEach(e => e.remove());
+    cadis.forEach((cadi) => {
+      const li = document.createElement("li");
+      li.classList.add("cadi-item");
+      li.textContent = "📚 " + cadi.nombre;
+      li.onclick = () => loadReas(cadi.id, li);
+      menu.appendChild(li);
+    });
+  } catch (e) {
+    console.warn("Backend no disponible, solo se muestra contenido estático.");
+  }
 }
 
 /* ===============================
