@@ -2,10 +2,202 @@ console.log("App.js cargado correctamente");
 
 const API = "/api";
 
+/* ===============================
+   DATOS ESTÁTICOS — SEMANA 1
+   Arquitectura y Gestión en
+   Sistemas Operativos
+================================ */
+const SEMANA_1 = {
+  num: 1,
+  titulo: "Arquitectura y Gestión en Sistemas Operativos",
+  subtitulo: "Procesos, Memoria y Algoritmos de Planificación",
+  secciones: [
+    {
+      id: "s1",
+      icono: "🎛️",
+      titulo: "El Orquestador: Definición y Propósito",
+      descripcion: "El Sistema Operativo (SO) es la capa de software que administra el hardware y proporciona una interfaz abstracta para las aplicaciones. Actúa como intermediario entre el 'lenguaje de máquina' y el usuario.",
+      items: [
+        "<strong>Multiplexación en el Tiempo:</strong> Turnos rotativos de uso (ej. CPU).",
+        "<strong>Multiplexación en el Espacio:</strong> División física de recursos (ej. RAM).",
+        "<strong>Clasificación:</strong> Batch, Tiempo Compartido, Tiempo Real.",
+        "<strong>Capas:</strong> Aplicaciones → SO (Gestión) → Hardware (Recursos Físicos)."
+      ]
+    },
+    {
+      id: "s2",
+      icono: "🖥️",
+      titulo: "Abstracción del Hardware: La Máquina Virtual",
+      descripcion: "El VMM (Monitor de Máquina Virtual) crea copias exactas del hardware, permitiendo aislamiento y consolidación entre sistemas.",
+      items: [
+        "<strong>Tipo 1 — Bare Metal:</strong> El hipervisor corre directamente sobre el hardware. Ej: VMware ESXi.",
+        "<strong>Tipo 2 — Hosted:</strong> El hipervisor corre sobre un SO anfitrión. Ej: VirtualBox.",
+        "<strong>Aislamiento:</strong> Cada VM opera de forma independiente.",
+        "<strong>Consolidación:</strong> Múltiples sistemas en un solo servidor físico."
+      ]
+    },
+    {
+      id: "s3",
+      icono: "⚙️",
+      titulo: "Anatomía de la Unidad de Trabajo: El Proceso",
+      descripcion: "Un programa es una entidad pasiva (código en disco). Un proceso es una entidad activa (programa en ejecución). Cada proceso tiene un PCB con toda su información de estado.",
+      items: [
+        "<strong>PID:</strong> Identificador único del proceso (ej: 0x812A).",
+        "<strong>Estado:</strong> Listo / En Ejecución / Bloqueado.",
+        "<strong>Contador de Programa & Registros CPU:</strong> Indican la siguiente instrucción.",
+        "<strong>Límites de Memoria:</strong> Rango de direcciones asignadas (ej: 0x8000 – 0xFFFF).",
+        "<strong>Info de Contabilidad:</strong> Uso de CPU, estadísticas de I/O."
+      ]
+    },
+    {
+      id: "s4",
+      icono: "🔄",
+      titulo: "Ciclo de Vida: Diagrama de Estados del Proceso",
+      descripcion: "Los procesos transitan entre estados. Solo puede haber 1 proceso en ejecución por CPU al mismo tiempo.",
+      items: [
+        "<strong>Nuevo → Ready:</strong> El proceso es admitido al sistema.",
+        "<strong>Ready → Run:</strong> El dispatcher asigna la CPU (Dispatch).",
+        "<strong>Run → Wait:</strong> El proceso solicita una operación E/S (Solicitud E/S).",
+        "<strong>Wait → Ready:</strong> Fin de la operación E/S (Fin E/S).",
+        "<strong>Run → Fin:</strong> El proceso termina su ejecución (Exit).",
+        "<strong>Run → Ready:</strong> Fin de tiempo / Interrupción expulsiva."
+      ]
+    },
+    {
+      id: "s5",
+      icono: "🍴",
+      titulo: "Control del Ciclo de Vida: UNIX vs. Windows",
+      descripcion: "Los SO exponen llamadas al sistema para crear, ejecutar y terminar procesos. UNIX y Windows difieren en su modelo de creación de procesos.",
+      items: [
+        "<strong>Creación UNIX:</strong> fork() — copia exacta del padre.",
+        "<strong>Creación Windows:</strong> CreateProcess() — crea un espacio completamente nuevo.",
+        "<strong>Ejecución nueva UNIX:</strong> execve() — reemplaza la imagen del proceso.",
+        "<strong>Terminación:</strong> exit/kill (UNIX) · ExitProcess/TerminateProcess (Windows).",
+        "<strong>Sincronización:</strong> waitpid() (UNIX) · WaitForSingleObject() (Windows)."
+      ]
+    },
+    {
+      id: "s6",
+      icono: "📅",
+      titulo: "El Estratega: Introducción a la Planificación de CPU",
+      descripcion: "El objetivo del planificador es maximizar el uso de CPU, la equidad y el throughput. Existen tres niveles según el horizonte de tiempo.",
+      items: [
+        "<strong>Largo Plazo (Admisión):</strong> Decide qué procesos ingresan al sistema (~300 ms).",
+        "<strong>Medio Plazo (Swapping):</strong> Mueve procesos entre RAM y disco para gestionar la multiprogramación.",
+        "<strong>Corto Plazo (Dispatcher):</strong> Asigna la CPU al siguiente proceso listo (~50 ms).",
+        "<strong>Expulsiva:</strong> El SO puede interrumpir al proceso activo.",
+        "<strong>No Expulsiva:</strong> El proceso cede la CPU voluntariamente."
+      ]
+    },
+    {
+      id: "s7",
+      icono: "📊",
+      titulo: "Algoritmos Básicos: FCFS y SJF",
+      descripcion: "Los algoritmos de planificación determinan el orden de ejecución. FCFS es simple pero genera el efecto convoy. SJF minimiza el tiempo de espera pero puede causar inanición.",
+      items: [
+        "<strong>FCFS (First-Come First-Served):</strong> No expulsivo. Tiempo de espera prom.: 2.75. Sufre efecto convoy.",
+        "<strong>SJF (Shortest Job First):</strong> No expulsivo. Tiempo de espera prom.: 1.5. Óptimo pero requiere duración a priori.",
+        "<strong>Efecto Convoy:</strong> Procesos cortos esperan detrás de uno largo en FCFS.",
+        "<strong>Inanición:</strong> Procesos largos pueden esperar indefinidamente en SJF."
+      ]
+    },
+    {
+      id: "s8",
+      icono: "🔁",
+      titulo: "Algoritmos Avanzados: SRTF y Round Robin",
+      descripcion: "SRTF es la versión expulsiva de SJF. Round Robin garantiza equidad con un quantum fijo, ideal para sistemas de tiempo compartido.",
+      items: [
+        "<strong>SRTF (Shortest Remaining Time First):</strong> Expulsivo. Si llega un proceso más corto, interrumpe al actual.",
+        "<strong>Round Robin:</strong> Cada proceso recibe un quantum fijo (Quantum = 4 en el ejemplo).",
+        "<strong>RR — Tiempo de espera prom.:</strong> 0.5 (excelente respuesta interactiva).",
+        "<strong>RR — Tiempo de retorno prom.:</strong> 4.25 (mayor latencia total por cambios de contexto).",
+        "<strong>Elección del Quantum:</strong> Muy pequeño → muchos cambios de contexto. Muy grande → se comporta como FCFS."
+      ]
+    },
+    {
+      id: "s9",
+      icono: "💾",
+      titulo: "El Espacio de Trabajo: Gestión de Memoria",
+      descripcion: "La gestión de memoria busca proteger los procesos entre sí, permitir la compartición controlada y optimizar el uso para maximizar la multiprogramación.",
+      items: [
+        "<strong>Protección:</strong> Aislamiento entre procesos — ninguno accede a memoria ajena.",
+        "<strong>Compartición:</strong> Acceso común controlado a zonas compartidas (librerías, IPC).",
+        "<strong>Optimización:</strong> Maximizar la multiprogramación con más procesos en RAM.",
+        "<strong>Jerarquía:</strong> Registros/Caché (velocidad extrema) → RAM (volátil) → Disco (persistente)."
+      ]
+    },
+    {
+      id: "s10",
+      icono: "🗺️",
+      titulo: "La Gran Ilusión: Memoria Virtual y Paginación",
+      descripcion: "La MMU traduce direcciones lógicas a físicas. Las páginas no usadas se mueven al área de Swap en disco, creando la ilusión de memoria infinita.",
+      items: [
+        "<strong>MMU + TLB:</strong> Traduce direcciones virtuales a físicas. TLB es caché de traducciones recientes.",
+        "<strong>Paginación:</strong> Memoria dividida en páginas (lógicas) y marcos (físicos) de tamaño fijo.",
+        "<strong>Fallo de Página:</strong> La página no está en RAM → se carga desde el disco (Swap).",
+        "<strong>Memoria Virtual:</strong> Cada proceso tiene su propio espacio lógico, mayor que la RAM física."
+      ]
+    }
+  ]
+};
+
+/* ===============================
+   INICIALIZACIÓN
+================================ */
 document.addEventListener("DOMContentLoaded", () => {
   loadHome();
   loadCadis();
+  buildSemanasMenu();
 });
+
+/* ===============================
+   MENÚ — SEMANA 1
+================================ */
+function buildSemanasMenu() {
+  const menu = document.getElementById("menu");
+
+  const sep = document.createElement("li");
+  sep.style.cssText = "font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);text-transform:uppercase;padding:14px 14px 4px;cursor:default;font-family:'Space Grotesk',sans-serif;pointer-events:none;";
+  sep.textContent = "Contenido del curso";
+  menu.appendChild(sep);
+
+  const li = document.createElement("li");
+  li.className = "semana-item";
+  li.innerHTML = `<span style="color:rgba(56,189,248,0.8);font-size:11px;font-family:'Space Mono',monospace;margin-right:6px;">S01</span>Arquitectura y Gestión SO`;
+  li.onclick = () => loadSemana();
+  menu.appendChild(li);
+}
+
+/* ===============================
+   CARGAR SEMANA 1
+================================ */
+function loadSemana() {
+  const s = SEMANA_1;
+
+  const secciones = s.secciones.map((sec, i) => `
+    <div class="semana-card" style="animation-delay:${i * 0.06}s">
+      <div class="semana-card-icon">${sec.icono}</div>
+      <h3>${sec.titulo}</h3>
+      <p>${sec.descripcion}</p>
+      <ul class="semana-card-list">
+        ${sec.items.map(it => `<li>${it}</li>`).join("")}
+      </ul>
+    </div>
+  `).join("");
+
+  document.getElementById("mainContent").innerHTML = `
+    <div class="semana-wrapper">
+      <div class="semana-header">
+        <div class="semana-num">Semana 1</div>
+        <h2>${s.titulo}</h2>
+        <p class="semana-desc">${s.subtitulo}</p>
+      </div>
+      <div class="semana-grid">
+        ${secciones}
+      </div>
+    </div>
+  `;
+}
 
 function loadHome() {
   document.getElementById("mainContent").innerHTML = `
@@ -65,12 +257,8 @@ function loadHome() {
 async function loadCadis() {
   const res = await fetch(`${API}/cadis`);
   const cadis = await res.json();
-
   const menu = document.getElementById("menu");
-
-  document.querySelectorAll(".cadi-item, .area-item")
-    .forEach(e => e.remove());
-
+  document.querySelectorAll(".cadi-item, .area-item").forEach(e => e.remove());
   cadis.forEach((cadi) => {
     const li = document.createElement("li");
     li.classList.add("cadi-item");
@@ -84,14 +272,10 @@ async function loadCadis() {
    CARGAR REAS POR CADI
 ================================ */
 async function loadReas(cadiId, element) {
-
   document.querySelectorAll(".area-item").forEach(e => e.remove());
-
   const res = await fetch(`${API}/reas`);
   const reas = await res.json();
-
   const filtradas = reas.filter((r) => r.cadi.id === cadiId);
-
   filtradas.forEach((rea) => {
     const sub = document.createElement("li");
     sub.textContent = "📂 " + rea.nombre;
@@ -107,50 +291,31 @@ async function loadReas(cadiId, element) {
 async function loadActividades(reaId) {
   const res = await fetch(`${API}/actividades`);
   const actividades = await res.json();
-
   const filtradas = actividades.filter((a) => a.rea.id === reaId);
-
   const main = document.getElementById("mainContent");
   main.innerHTML = `
         <h2>Actividades</h2>
         <button onclick="crearActividad(${reaId})">➕ Nueva Actividad</button>
         <div class="card-container"></div>
     `;
-
   const container = document.querySelector(".card-container");
-
   filtradas.forEach((act) => {
     const card = document.createElement("div");
     card.classList.add("card");
-
     let botonVer = "";
-
     if (act.archivo) {
       botonVer = `
-            <button class="btn-view" onclick="verArchivo('${act.archivo}')">
-                Ver Archivo
-            </button>
-            <button class="btn-delete" onclick="eliminarArchivo(${act.id})">
-                Eliminar Archivo
-            </button>
+            <button class="btn-view" onclick="verArchivo('${act.archivo}')">Ver Archivo</button>
+            <button class="btn-delete" onclick="eliminarArchivo(${act.id})">Eliminar Archivo</button>
         `;
     }
-
     card.innerHTML = `
         <h3>${act.titulo}</h3>
         <p>${act.descripcion || ""}</p>
-
-        <button class="btn-upload" onclick="subirArchivo(${act.id})">
-            Subir Archivo
-        </button>
-
+        <button class="btn-upload" onclick="subirArchivo(${act.id})">Subir Archivo</button>
         ${botonVer}
-
-        <button class="btn-delete" onclick="eliminarActividad(${act.id})">
-            Eliminar Actividad
-        </button>
+        <button class="btn-delete" onclick="eliminarActividad(${act.id})">Eliminar Actividad</button>
     `;
-
     container.appendChild(card);
   });
 }
@@ -161,13 +326,11 @@ async function loadActividades(reaId) {
 async function crearActividad(reaId) {
   const titulo = prompt("Título:");
   const descripcion = prompt("Descripción:");
-
   await fetch(`${API}/actividades?reaId=${reaId}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ titulo, descripcion }),
   });
-
   alert("Actividad creada");
   loadActividades(reaId);
 }
@@ -176,10 +339,7 @@ async function crearActividad(reaId) {
    ELIMINAR ACTIVIDAD
 ================================ */
 async function eliminarActividad(id) {
-  await fetch(`${API}/actividades/${id}`, {
-    method: "DELETE",
-  });
-
+  await fetch(`${API}/actividades/${id}`, { method: "DELETE" });
   alert("Actividad eliminada");
   location.reload();
 }
@@ -190,21 +350,14 @@ async function eliminarActividad(id) {
 function subirArchivo(id) {
   const input = document.createElement("input");
   input.type = "file";
-
   input.onchange = async () => {
     const file = input.files[0];
     const formData = new FormData();
     formData.append("file", file);
-
-    await fetch(`${API}/actividades/${id}/archivo`, {
-      method: "POST",
-      body: formData,
-    });
-
+    await fetch(`${API}/actividades/${id}/archivo`, { method: "POST", body: formData });
     alert("Archivo subido");
     location.reload();
   };
-
   input.click();
 }
 
@@ -219,10 +372,7 @@ function verArchivo(ruta) {
    ELIMINAR ARCHIVO
 ================================ */
 async function eliminarArchivo(id) {
-  await fetch(`${API}/actividades/${id}/archivo`, {
-    method: "DELETE",
-  });
-
+  await fetch(`${API}/actividades/${id}/archivo`, { method: "DELETE" });
   alert("Archivo eliminado");
   location.reload();
 }
