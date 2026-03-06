@@ -282,13 +282,92 @@ async function loadReas(cadiId, element) {
   const res = await fetch(`${API}/reas`);
   const reas = await res.json();
   const filtradas = reas.filter((r) => r.cadi.id === cadiId);
-  filtradas.forEach((rea) => {
+
+  // Distribuir secciones de SEMANA_1 entre los REAs disponibles
+  const totalSecciones = SEMANA_1.secciones.length;
+  const totalReas = filtradas.length;
+
+  filtradas.forEach((rea, reaIdx) => {
     const sub = document.createElement("li");
     sub.textContent = "📂 " + rea.nombre;
     sub.classList.add("area-item");
-    sub.onclick = () => loadActividades(rea.id);
+
+    if (reaIdx === 0) {
+      // Primer REA: muestra todas las secciones del PDF
+      sub.onclick = () => loadReaConSemana(rea.id, SEMANA_1.secciones, rea.nombre);
+    } else {
+      // Resto de REAs: solo actividades normales
+      sub.onclick = () => loadActividades(rea.id);
+    }
+
     element.after(sub);
   });
+
+  // Re-ordenar: element.after() inserta en reversa, revertimos
+  const inserted = [...element.parentNode.querySelectorAll(".area-item")];
+  inserted.reverse().forEach(el => element.after(el));
+}
+
+/* ===============================
+   CARGAR REA CON SECCIONES DE SEMANA
+================================ */
+async function loadReaConSemana(reaId, secciones, reaNombre) {
+  const res = await fetch(`${API}/actividades`);
+  const actividades = await res.json();
+  const filtradas = actividades.filter((a) => a.rea.id === reaId);
+
+  const main = document.getElementById("mainContent");
+
+  // Tarjetas de actividades del backend
+  const actCards = filtradas.map(act => {
+    let botonVer = act.archivo ? `
+      <button class="btn-view" onclick="verArchivo('${act.archivo}')">Ver Archivo</button>
+      <button class="btn-delete" onclick="eliminarArchivo(${act.id})">Eliminar Archivo</button>` : "";
+    return `
+      <div class="card">
+        <h3>${act.titulo}</h3>
+        <p>${act.descripcion || ""}</p>
+        <button class="btn-upload" onclick="subirArchivo(${act.id})">Subir Archivo</button>
+        ${botonVer}
+        <button class="btn-delete" onclick="eliminarActividad(${act.id})">Eliminar Actividad</button>
+      </div>`;
+  }).join("");
+
+  // Tarjetas de secciones del PDF
+  const semanaCards = secciones.map((sec, i) => `
+    <div class="semana-card" style="animation-delay:${i * 0.06}s">
+      <div class="semana-card-icon">${sec.icono}</div>
+      <h3>${sec.titulo}</h3>
+      <p>${sec.descripcion}</p>
+      <ul class="semana-card-list">
+        ${sec.items.map(it => `<li>${it}</li>`).join("")}
+      </ul>
+    </div>`).join("");
+
+  main.innerHTML = `
+    <div class="semana-wrapper">
+      <div class="semana-header">
+        <div class="semana-num">Semana 1 · REA</div>
+        <h2>${reaNombre}</h2>
+        <p class="semana-desc">Contenido académico y actividades de este recurso educativo.</p>
+      </div>
+
+      ${secciones.length > 0 ? `
+        <div style="padding:24px 44px 0;">
+          <div class="semana-grid" style="padding:0;">
+            ${semanaCards}
+          </div>
+        </div>` : ""}
+
+      <div style="padding:20px 44px 8px 44px;display:flex;align-items:center;gap:10px;">
+        <h2 style="margin:0;border:none;padding:0;font-size:18px;color:var(--azul);">Actividades</h2>
+        <button onclick="crearActividad(${reaId})" style="margin:0;">➕ Nueva Actividad</button>
+      </div>
+      <div class="card-container">
+        ${actCards || '<p style="padding:0 44px;color:var(--muted);">No hay actividades aún.</p>'}
+      </div>
+    </div>
+  `;
 }
 
 /* ===============================
